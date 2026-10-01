@@ -6,15 +6,22 @@ class Solution {
         int left = 0;
         
         HashMap<Integer, Integer> frequencyMap = new HashMap<>();
+        HashMap<Integer, Integer> countOfFrequenciesMap = new HashMap<>();
 
         for (int right = left; right < nums.length; right++) {
             int currentElement = nums[right];
-            frequencyMap.put(currentElement, frequencyMap.getOrDefault(currentElement, 0) + 1);
+            
+            int oldFreq = frequencyMap.getOrDefault(currentElement, 0);
+            int newFreq = oldFreq + 1;
+            frequencyMap.put(currentElement, newFreq);
 
-            HashMap<Integer, Integer> countOfFrequenciesMap = new HashMap<>();
-            for (int frequency : frequencyMap.values()) {
-                countOfFrequenciesMap.put(frequency, countOfFrequenciesMap.getOrDefault(frequency, 0) + 1);
+            if (oldFreq > 0) {
+                countOfFrequenciesMap.put(oldFreq, countOfFrequenciesMap.get(oldFreq) - 1);
+                if (countOfFrequenciesMap.get(oldFreq) == 0) {
+                    countOfFrequenciesMap.remove(oldFreq);
+                }
             }
+            countOfFrequenciesMap.put(newFreq, countOfFrequenciesMap.getOrDefault(newFreq, 0) + 1);
 
             if (countOfFrequenciesMap.size() == 2) {
                 int n = -1;
